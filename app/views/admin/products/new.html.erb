@@ -1,0 +1,153 @@
+<h3 class="flash_product"><%= flash.now[:product] %></h3>
+
+<div class="product_content">
+    <h1>商品の追加</h1>
+    <section class="add-box">
+    <%= form_for(@product, url:"/admin/products") do |f| %>
+
+        <div class="left">
+            <p class="add-text">商品名</p><br>
+            <p class="add-text">価格</p><br>
+            <p class="add-text">画像を追加</p><br>
+            <p class="add-text">販売中・販売中止</p><br>
+            <p class="add-text">在庫数</p>
+            <p class="add-text">アーティスト名</p><br>
+            <p class="add-text">ジャンル名</p><br>
+            <p class="add-text">レーベル名</p>
+            <p class="add-text">CDを追加</p>
+        </div>
+
+        <div class="right">
+        <p class="form"><%= f.text_field :productname, :placeholder => "商品名"  %></p><br>
+        <p class="form"><%= f.number_field :price, :placeholder => "値段" %></p><br>
+        <p class="form"><%= f.attachment_field :image, format: 'jpeg', size: "100x100", fallback:"/images/no_image.png" %></p><br>
+        <p class="form">
+            <label><%= f.radio_button :sale_status, '販売中' %> 販売中  </label>
+            <label><%= f.radio_button :sale_status, '販売停止中' %> 販売停止中  </label>
+        </p><br>
+
+
+            <%= f.select :stock_number, options_for_select((0..100).to_a) %><br><br>
+
+
+            <p class="form"><%= f.collection_select :artist_id, Artist.all, :id, :artistname %>
+            <%= link_to '⇦にアーティスト名が無い場合はこちら', new_admin_artist_path %></p><br>
+
+            <p class="form"><%= f.collection_select :genre_id, Genre.all, :id, :genrename %>
+            <%= link_to '⇦にジャンルが無い場合はこちら', new_admin_genre_path %></p><br>
+
+            <p class="form"><%= f.collection_select :label_id, Label.all, :id, :labelname %>
+            <%= link_to '⇦にレーベルが無い場合はこちら', new_admin_label_path %></p><br>
+
+            <%# cdの情報 %>
+            <p class="form">
+                <%= link_to_add_association 'CDを追加', f, :cds %>
+                <%= f.fields_for :cds do |cd| %>
+                    <%= render 'cd_fields', f: cd %>
+                <% end %>
+            </p>
+        </div>
+
+        <%= f.submit "商品を追加する", :class=>"btn"%>
+
+    <% end %>
+    </section>
+</div>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    h1{
+        text-align:center;
+    }
+
+    .add-box{
+        margin-top:40px;
+    }
+
+    .left{
+        width:35%;
+        float:left;
+        margin-left:15%;
+    }
+
+    .right{
+        width:50%;
+        float:right;
+    }
+
+    input[type="text"] {
+        width: 300px;
+        height: 40px;
+    }
+
+    input[type="number"] {
+        width: 300px;
+        height: 40px;
+    }
+
+    .add-text{
+        font-size:23px;
+        text-align:center;
+        margin-top:10px;
+    }
+
+    .form{
+        height:40px;
+    }
+
+    .form:nth-child(7){
+        padding-top:16px;
+    }
+
+    .form:nth-child(9){
+        margin-top:20px;
+    }
+
+    .form:nth-child(11){
+        padding-top:5px;
+    }
+
+    .form:nth-child(13){
+        padding-top:5px;
+    }
+
+    .form:nth-child(15){
+        padding-top:8px;
+    }
+
+    .btn {
+        background-color:#ccc;
+        width: 250px;
+        height: 70px;
+        margin-left:40%;
+        font-size:20px;
+        margin-bottom:50px;
+    }
+    .flash_product{
+        text-align: center;
+        color:red;
+        font-size: 25px;
+    }
+    .product_content{
+        margin-top:70px;
+    }
+
+    .add_fields{
+        background:#65f0f2;
+        color:black;
+        padding:5px 5px;
+        border-radius:5px;
+    }
+
+    .remove_fields{
+        background:#78dca5;
+        color:black;
+        padding:5px;
+        border-radius:5px;
+    }
+</style>

@@ -1,0 +1,189 @@
+
+<h2><%= flash[:notice] %></h2>
+    <section class="product-box">
+    <% @order_histories.each do |order| %>
+	<section class="left">
+        <span class="product">
+            <span class="image">
+                <%= attachment_image_tag order.product, :image, fallback:"/images/no_image.png", size:"50x50" %>
+            </span>
+
+            <span class="text">
+                <p class="song">商品名：<%= order.productname %></p><br>
+                <p class="price">ジャンル名：<%= order.genrename %></p>
+                <p class="price">レーベル名：<%= order.labelname %></p>
+
+                <p class="price">アーティスト名：<%= order.artistname %></p>
+                <p class="price">¥<%= order.price %></p>
+                <p class="price">購入枚数：<%= order.quantity %>枚</p>
+            </span>
+        </span>
+    </section>
+    <% end %>
+	</section>
+    <section class="address-box">
+    <br><p class="price pri">購入日時：<%= @order_histories.first.created_at.strftime('%Y/%m/%d/%H:%M') %></p><br>
+
+		<p class="price">郵便番号：<%= @order.address_number %></p>
+		<p class="price">配送先住所:<%= @order.prefecture %><%= @order.municipality %><%= @order.building %></p>
+
+		<p class="price">送料：¥<%= @order.postage %></p>
+		<p class="price">小計：¥<%= @order.subtotal %></p><br>
+        <p class="price pri2">合計金額: <%= @order_histories.first.total_amount %>円</p>
+
+                <% if @order_histories.first.pay_select == 0 %>
+                            <p class="price">お支払い方法：クレジットカード</p>
+                <% elsif @order_histories.first.pay_select == 1 %>
+                            <p class="price">お支払い方法：着払い</p>
+                <% elsif @order_histories.first.pay_select == 2 %>
+                            <p class="price">お支払い方法：コンビニ払い</p>
+                <% else %>
+                            <p class="price">不明</p>
+                <% end %>
+        </p>
+                <p class="price">配送状況: <%= @order_histories.first.shipment_status %></p>
+    <% if current_user.admin?%>
+
+            <% else %>
+            <p class="back_product"><%= link_to "ショッピングを続ける", products_path %>
+        <% end %>
+    </section>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    h1{
+        text-align:center;
+    }
+
+    p{
+        margin:0;
+    }
+
+    .product-box{
+        margin-top:40px;
+        height:auto;
+        overflow: hidden;
+        position:rerative;
+        zoom:1;
+    }
+
+    .left{
+        width:50%;
+        float:left;
+        border-right:2px solid #222;
+        display:flex;
+    }
+
+    
+
+    .product{
+        width:80%;
+        height:280px;
+        display:flex;
+        justify-content: space-around;
+        text-align:justify;
+        margin-left:13%;
+        clear:both;
+    }
+
+    .image{
+        height:160px;
+        width:160px;
+        margin-top:2%;
+        display:inline-block;
+    }
+
+    .text{
+        float:right;
+        width:60%;
+    }
+
+    .song{
+        font-size:25px;
+        text-align:center;
+        overflow: scroll;
+        white-space: pre;
+    }
+
+    .artist{
+        font-size:18px;
+        text-align:center;
+    }
+
+    .status{
+        font-size:16px;
+        text-align:center;
+    }
+
+    .price{
+        font-size:20px;
+        text-align:center;
+    }
+
+    .status-box{
+        width:40%;
+        margin:0 auto;
+        padding: 0.5em 1em;
+        background: -moz-linear-gradient(#ffb03c, #ff708d);
+        background: -webkit-linear-gradient(#ffb03c, #ff708d);
+        background: linear-gradient(to right, #ffb03c, #ff708d);
+        border-radius:70%;
+        color: #FFF;
+    }
+
+    .paging{
+        text-align:center;
+        height: 60px;
+    }
+    .back_product{
+        margin:60px auto;
+        height:50px;
+        text-align:center;
+        width:30%;
+        padding: 0.5em 1em;
+        background: #00bfff;
+        border-radius:5px;
+        font-size:22px;
+    }
+    .back_product>a{
+        color:#fff;
+    }
+
+    .thank_you{
+        margin:0 auto;
+        width:50%;
+        height:90px;
+        padding:8px 0 0 0;
+        background:#ffdab9;
+        border-radius:20px;
+    }
+
+    .address-box{
+        height:480px;
+        width:80%;
+        background:#fffff0;
+        border-radius:20px;
+        border:2px #aaa solid;
+        margin:50px auto 0 auto;
+    }
+
+    .price{
+        font-size:23px;
+    }
+
+     .pri{
+        font-size:25px;
+        text-align:center;
+        margin-top:2px;
+    }
+
+    .pri2{
+        font-size:30px;
+    }
+
+</style>

@@ -1,0 +1,41 @@
+管理者 ID, email => pp@pp, pass=> aaaaaa
+
+
+
+<div class="sign_in_form">
+    <div class="sign_in_content">
+    <h2>管理者ログインページ</h2><br><br>
+<%= form_for(:user, :url => session_path(:user)) do |f| %>
+
+      <div class="field">
+        <%= f.label :email %><br/>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => "例）aaa@gmail.com" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :パスワード %><br />
+        <%= f.password_field :password, autocomplete: "current-password", :placeholder => "パスワードを入力してください" %>
+      </div>
+
+
+      <div class="actions">
+        <%= f.submit "ログイン",class:"btn btn-success" %>
+      </div><br>
+    <% end %>
+  <br>
+
+  </div>
+</div>
+
+<style>
+    .sign_in_form {
+    margin: 50px auto 50px auto;
+    text-align: center;
+    border :inset;
+    width: 800px;
+    height: 600px
+  }
+    .sign_in_content {
+      padding-top: 40px;
+    }
+</style>

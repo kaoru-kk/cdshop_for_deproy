@@ -1,0 +1,68 @@
+<h2 class="address_message"><%= flash[:alert] %></h2>
+
+<h2 class="address_message"><%= flash[:address]%></h2>
+<div class="user_edit">
+  <div class="border-edit">
+    <%= form_for @user do |f| %>
+          <div class= "field">
+            <%= f.label :苗字 %><br>
+            <%= f.text_field :name, :placeholder => "例）志位出意" %>
+          </div>
+
+          <div class= "field">
+            <%= f.label :名前 %><br>
+            <%= f.text_field :lastname, :placeholder => "例）太朗" %>
+          </div>
+
+          <div class= "field">
+            <%= f.label :フリガナ（苗字） %><br>
+            <%= f.text_field :name_kana, :placeholder => "例）シイテイ" %>
+          </div>
+
+          <div class= "field">
+            <%= f.label :フリガナ（名前） %><br>
+            <%= f.text_field :lastname_kana, :placeholder => "例）タロウ" %>
+          </div>
+
+          <div class= "field">
+            <%= f.label :電話番号 %><br>
+            <%= f.text_field :tellnumber, :placeholder => "ハイフンなしで入力してください" %>
+          </div>
+
+          <div class="field">
+            <%= f.label :email %><br />
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", :placeholder => "例）aaa@gmail.com" %>
+          </div>
+            <%= f.submit "変更する",class:"btn btn-success" %>
+
+          <div class="links">
+            <%= link_to_add_association '住所を追加', f, :addresses, id:"address_nest",class:"btn btn-danger" %>
+          </div>
+
+          <%= f.fields_for :addresses, @user.addresses do |a| %>
+            <%= render 'address_fields', f: a %>
+          <% end %>
+
+          <div class="actions">
+          </div>
+    <% end %>
+    </div>
+</div>
+
+<style>
+.user_edit {
+  text-align: center;
+}
+
+.user_edit-ex {
+    text-align: center;
+    border: solid 2px gray;
+    width: 700px;
+    height: 800px;
+}
+.address_message{
+  text-align:center;
+  color:red;
+}
+
+</style>

@@ -1,0 +1,262 @@
+<h1>価格と住所が正しければ購入ボタンを押してください</h1>
+    <section class="product-box">
+    <% @all_products.each do |order| %>
+	<section class="left">
+        <span class="product">
+            <%= link_to product_path(order.product.id) do %>
+            <span class="image">
+                <%= attachment_image_tag order.product, :image, fallback:"/images/no_image.png", size:"50x50" %>
+            </span>
+            <% end %>
+            <span class="text">
+                <p class="song"><%= order.product.productname %></p><br>
+                <p class="artist"><%= order.product.artist.artistname %></p><br>
+                <p class="price">¥<%= order.product.price %></p>
+                <p class="price">購入枚数：<%= order.purchase_number %>枚</p>
+            </span>
+        </span>
+    </section>
+    <% end %>
+	</section>
+    <% if @all_products.blank? %>
+		<p class="back_product1"><%= link_to "商品を追加してください",products_path %></p>
+    <% else %>
+    <section class="address-box">
+		<p class="pri">小計：¥<%= @order.subtotal %></p>
+        <p class="pri">送料：¥<%= @order.postage %></p>
+		<p class="pri fin">総計：¥<%= @order.postage + @order.subtotal %></p><br>
+
+    <%= form_for(Order.new,url:user_order_histories_path(current_user.id), method: :post) do |f| %>
+            <div class="select_address">
+                <p class="address_message">住所を選択してください</p><br>
+                <% current_user.addresses.each do |address| %>
+                    <%= f.radio_button :address_id, address.id,checked: true  %>
+                    <%= address.address_number %><%= address.prefecture %><%= address.municipality %><%= address.building%><br>
+                <% end %>
+            </div>
+
+                <%= form_for(OrderHistory.new, url:user_order_histories_path(current_user.id), method: :post) do |form| %>
+                    <div class="select-pay">
+                    <p class="how">お支払い方法</p>
+                        <%= form.radio_button :pay_select, "0",class: "label", checked: true %>
+                        <%= form.label(:pay_select, "クレジットカード", value: "0",class: "label la" )  %>
+
+                        <%= form.radio_button :pay_select, "1",class: "label"%>
+                        <%= form.label(:pay_select, "着払い", value: "1",class: "label")  %>
+
+                        <%= form.radio_button :pay_select, "2",class: "label" %>
+                        <%= form.label(:pay_select, "コンビニ払い", value: "2",class: "label")  %>
+                        <br>
+                    </div>
+                <%= f.submit "購入", data: {confirm: "本当に購入しますか？"},class: "btn" %>
+
+        <% end %>
+    <% end %>
+    </section>
+
+    <% end %>
+
+		<p class="back_product"><%= link_to "カートに戻る", cart_products_path %>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    h1{
+        text-align:center;
+    }
+
+    p{
+        margin:0;
+    }
+
+    .product-box{
+        margin-top:40px;
+        height:auto;
+        overflow: hidden;
+        position:rerative;
+        zoom:1;
+    }
+
+    .left{
+        width:50%;
+        float:left;
+        border-right:2px solid #222;
+        display:flex;
+    }
+
+    
+
+    .product{
+        width:80%;
+        height:190px;
+        display:flex;
+        justify-content: space-around;
+        text-align:justify;
+        margin-left:13%;
+        clear:both;
+    }
+
+    .image{
+        height:160px;
+        width:160px;
+        margin-top:2%;
+        display:inline-block;
+    }
+
+    .text{
+        float:right;
+        width:60%;
+    }
+
+    .song{
+        font-size:25px;
+        text-align:center;
+        overflow: scroll;
+        white-space: pre;
+    }
+
+    .artist{
+        font-size:18px;
+        text-align:center;
+    }
+
+    .status{
+        font-size:16px;
+        text-align:center;
+    }
+
+    .price{
+        font-size:20px;
+        text-align:center;
+    }
+
+    .status-box{
+        width:40%;
+        margin:0 auto;
+        padding: 0.5em 1em;
+        background: -moz-linear-gradient(#ffb03c, #ff708d);
+        background: -webkit-linear-gradient(#ffb03c, #ff708d);
+        background: linear-gradient(to right, #ffb03c, #ff708d);
+        border-radius:70%;
+        color: #FFF;
+    }
+
+    .paging{
+        text-align:center;
+        height: 60px;
+    }
+    .back_product{
+        margin:40px auto;
+        text-align:center;
+        width:20%;
+        padding: 0.5em 1em;
+        background: purple;
+        border-radius:10px;
+    }
+    .back_product>a{
+        color:#fff;
+    }
+    .back_product1{
+        margin:40px auto;
+        text-align:center;
+        width:20%;
+        padding: 0.5em 1em;
+        background: red;
+        border-radius:10px;
+    }
+    .back_product1>a{
+        color:#fff;
+    }
+    .radio-button{
+        text-align: center;
+    }
+
+    .address-box{
+        height:550px;
+        width:80%;
+        background:#fffff0;
+        border-radius:20px;
+        border:2px #aaa solid;
+        margin:50px auto 0 auto;
+    }
+
+    .price{
+        font-size:23px;
+    }
+
+    .pri{
+        font-size:25px;
+        text-align:center;
+        margin-top:2px;
+    }
+
+    .pri2{
+        margin-top:15px;
+    }
+
+    .fin{
+        font-size:32px;
+    }
+
+    .how{
+        margin-top:40px;
+        font-size:23px;
+        text-align:center;
+    }
+
+    .select-pay{
+        margin-top:10px;
+        height:135px;
+        padding:0 auto;
+    }
+
+    input[type="radio"]:checked + label {
+        color: #3275bc;
+        border: 2px solid #3275bc;
+        background-color: #d0e6fd;  /* マウス選択時のフォント色を指定する */
+    }
+
+    .label {
+        color: #aaa;
+        border: 2px solid #aaa;
+        text-align: center;
+        display: inline-block;
+        padding: 12px 0px;
+        width: 200px;
+        height:45px;
+        font-size:17px;
+        margin-left:2%;
+    }
+
+    .la{
+        margin-left:18%;
+    }
+
+    .label:hover {
+        color: #aaa;
+        border: 2px solid #aaa;
+        cursor: pointer;
+    }
+
+    .btn{
+        height:60px;
+        width:200px;
+        background:#fa8072;
+        border-radius:20px;
+        color:#fff;
+        font-size:24px;
+        margin:30px auto 0 40%;
+    }
+    .select_address{
+        text-align: center;
+    }
+    .address_message{
+        font-size: 22px;
+    }
+
+
+</style>

@@ -1,0 +1,129 @@
+<h1>ユーザー一覧</h1>
+<div class="users">
+<% @users.each do |f| %>
+    <div class="user-box">
+        <% if f.deleted_at? %>
+            <div class="left-top">退会済み</div>
+        <% else %>
+            <% if f.admin? %>
+            <div class="left-top1">管理者</div>
+            <% else %>
+            <div class="left-top2">アクティブユーザー</div>
+            <% end %>
+        <% end %>
+        <div class="info-left">
+            <p>ユーザ名：</p>
+            <p>メールアドレス：</p>
+            <p>電話番号：</p>
+        </div>
+        <div class="info-center">
+            <p><%= f.name %><%= f.lastname %></p>
+            <p><%= f.email %></p>
+            <p><%= f.tellnumber %></p>
+        </div>
+            <% if f.admin? %>
+            <% else %>
+                <div class="info-right">
+                <%= link_to admin_user_path(f) do %>
+                <div class="info-right2">
+                    <p>詳細</p>
+                </div>
+            <% end %>
+        <% end %>
+        </div>
+    </div>
+<% end %>
+</div>
+
+<style>
+
+h1{
+    text-align:center;
+}
+
+.users{
+    margin-top:5%;
+}
+
+.user-box{
+    width:70%;
+    height:150px;
+    margin:5% auto;
+    background:#ddd;
+    font-size:20px;
+    display:flex;
+}
+
+.info-left{
+    width:40%;
+    height:150px;
+    text-align:right;
+}
+
+.info-left>p{
+    margin-top:4%;
+}
+
+.info-center>p{
+    margin-top:4%;
+}
+
+.info-center{
+    width:50%;
+    height:150px;
+    padding-left:10%;
+}
+
+.info-right{
+    width:10%;
+    height:150px;
+    background:#777;
+    text-align:center;
+    text-decoration:none;
+}
+
+.info-right2{
+    height:150px;
+    padding-top:65%;
+    background:#777;
+}
+
+.info-right2 > p{
+    text-decoration:none;
+    color:#fff;
+}
+
+.right-top{
+    height:75px;
+}
+
+.right-bottom{
+    height:75%;
+}
+
+.left-top{
+    position:absolute;
+    width:15%;
+    background: red;
+    border-radius:5%;
+    text-align:center;
+    color:white;
+}
+.left-top1{
+    position:absolute;
+    width:15%;
+    background: green;
+    border-radius:5%;
+    text-align:center;
+    color:white;
+}
+.left-top2{
+    position:absolute;
+    width:15%;
+    background: #6787cd;
+    border-radius:5%;
+    text-align:center;
+    color:white;
+}
+
+</style>
